@@ -42,7 +42,7 @@ else(ZMQ_FOUND)
             INSTALL_COMMAND cp ${THIRDPARTY_DIR}/src/cppzmq/zmq.hpp ${PROJECT_BINARY_DIR}/include/zmq.hpp
         )
         list(APPEND external_project_dependencies cppzmq)
-        add_dependencies(cppzmq libzmq)
+
     endif(NOT ZMQ_INCLUDE_DIR)
     if(NOT ZMQ_LIBRARY)
         ExternalProject_Add(
@@ -55,12 +55,13 @@ else(ZMQ_FOUND)
             CMAKE_ARGS -DZMQ_BUILD_TESTS=OFF
         )
         list(APPEND external_project_dependencies libzmq)
+        add_dependencies(cppzmq libzmq)
     endif(NOT ZMQ_LIBRARY)
     set(ZMQ_INCLUDE_DIR "${PROJECT_BINARY_DIR}/include")
     if(WIN32)
         set(ZMQ_LIBRARY "${PROJECT_BINARY_DIR}/lib/libzmq.lib")
     else(WIN32)
-        set(ZMQ_LIBRARY "${PROJECT_BINARY_DIR}/lib/libzmq.so")
+        set(ZMQ_LIBRARY "${PROJECT_BINARY_DIR}/lib/libzmq-static.a")
     endif(WIN32)
     message (STATUS "  (Headers should be)       ${ZMQ_INCLUDE_DIR}")
     message (STATUS "  (Library should be)       ${ZMQ_LIBRARY}")
