@@ -9,15 +9,17 @@
 
 namespace csci5570 {
 
-class AbstractServerThread : public Actor {
+class ServerThread : public Actor {
  public:
-  AbstractServerThread(uint32_t server_id) : Actor(server_id) {}
-
+  ServerThread(uint32_t server_id) : Actor(server_id) {}
+  
   // for model maintenance
-  virtual void RegisterModel(uint32_t model_id, std::unique_ptr<AbstractModel>&& model) = 0;
-  virtual AbstractModel* GetModel(uint32_t model_id) = 0;
+  void RegisterModel(uint32_t model_id, std::unique_ptr<AbstractModel>&& model);
+  AbstractModel* GetModel(uint32_t model_id);
 
  protected:
+  virtual void Main() override;                                  // where the actor polls events and reacts
+
   std::unordered_map<uint32_t, std::unique_ptr<AbstractModel>> models_;
 };
 

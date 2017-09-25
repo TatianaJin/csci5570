@@ -43,5 +43,6 @@ set(HUSKY_EXTERNAL_LIB ${GLOG_LIBRARY} ${GFLAGS_LIBRARY} ${ZMQ_LIBRARY} ${CMAKE_
 
 add_subdirectory(base)
 add_subdirectory(comm)
+add_subdirectory(server)
 
 add_subdirectory(test)

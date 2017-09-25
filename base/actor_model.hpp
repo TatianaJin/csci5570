@@ -14,11 +14,17 @@ class Actor {
  public:
   Actor(uint32_t actor_id) : id_(actor_id) {}
 
-  virtual void Start() = 0;                                 // start a working thread
-  virtual void Stop() = 0;                                  // return when the working thread finishes
-  virtual ThreadsafeQueue<Message>* GetWorkQueue() = 0;   // getter of work queue
-  virtual uint32_t GetId() const = 0;                       // getter of actor thread id
+  void Start() {  // start a working thread
+    working_thread_ = std::thread([this] { Main(); });
+  }
 
+  void Stop() { // return when the working thread finishes
+    working_thread_.join();
+  }
+
+  ThreadsafeQueue<Message>* GetWorkQueue() { return &work_queue_; }   // getter of work queue
+
+  uint32_t GetId() const { return id_; }                       // getter of actor thread id
  protected:
   virtual void Main() = 0;                                  // where the actor polls events and reacts
 
