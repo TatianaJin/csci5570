@@ -1,6 +1,6 @@
 #pragma once
 
-#include "base/serialization.hpp"
+#include "base/message.hpp"
 #include "base/threadsafe_queue.hpp"
 
 #include <condition_variable>
@@ -16,7 +16,7 @@ class Actor {
 
   virtual void Start() = 0;                                 // start a working thread
   virtual void Stop() = 0;                                  // return when the working thread finishes
-  virtual ThreadsafeQueue<BinStream>* GetWorkQueue() = 0;   // getter of work queue
+  virtual ThreadsafeQueue<Message>* GetWorkQueue() = 0;   // getter of work queue
   virtual uint32_t GetId() const = 0;                       // getter of actor thread id
 
  protected:
@@ -24,7 +24,7 @@ class Actor {
 
   uint32_t id_;
   std::thread working_thread_;
-  ThreadsafeQueue<BinStream> work_queue_;
+  ThreadsafeQueue<Message> work_queue_;
 };
 
 }  // namespace csci5570
