@@ -14,11 +14,12 @@ class MapStorage : public AbstractStorage {
  public:
   MapStorage() = default;
 
-  virtual void SubAdd(const third_party::SArray<Key>& typed_keys, 
+  virtual void SubAdd(const third_party::SArray<Key>& typed_keys,
       const third_party::SArray<char>& vals) override {
     auto typed_vals = third_party::SArray<Val>(vals);
     CHECK_EQ(typed_keys.size(), typed_vals.size());
     // TODO
+    LOG(INFO) << "Test by Andy";
   }
 
   virtual third_party::SArray<char> SubGet(const third_party::SArray<Key>& typed_keys) override {
