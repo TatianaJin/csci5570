@@ -1,7 +1,7 @@
 #pragma once
 
 #include "base/actor_model.hpp"
-#include "base/serialization.hpp"
+#include "base/message.hpp"
 #include "base/threadsafe_queue.hpp"
 
 #include <condition_variable>
@@ -16,7 +16,7 @@ class AbstractWorkerThread : public Actor {
   AbstractWorkerThread(uint32_t worker_id) : Actor(worker_id) {}
 
  protected:
-  virtual void OnReceive(BinStream& msg) = 0;  // callback on receival of a message
+  virtual void OnReceive(Message& msg) = 0;  // callback on receival of a message
 
   // there may be other functions
   //   Wait() and Nofify() for telling when parameters are ready

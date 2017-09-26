@@ -1,6 +1,7 @@
 include_directories(${PROJECT_SOURCE_DIR} ${HUSKY_EXTERNAL_INCLUDE})
 
 add_library(csci5570 STATIC 
+  $<TARGET_OBJECTS:server-objs> 
   $<TARGET_OBJECTS:comm-objs> 
   $<TARGET_OBJECTS:base-objs>
   )
