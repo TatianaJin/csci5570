@@ -15,6 +15,13 @@ cmake .. -DCMAKE_BUILD_TYPE=Debug
 ```
 See the make list by `make help`, and make anything in the list by `make ${ANYTHING}`
 
+```
+cd build/     # cd to the build directory
+make -j4      # build all the targets
+./HuskyUnitTest  # run all unit tests
+./HuskyUnitTest --gtest_filter=TestServerThread.RegisterModel  # run a specific test
+```
+
 ## Tutorial 2
 * The mailbox is provided as a bottom layer communication module
 * The prototypes of server threads, worker threads, and communication threads are also provided for your reference
