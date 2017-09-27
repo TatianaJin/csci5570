@@ -19,7 +19,7 @@ class MapStorage : public AbstractStorage {
     auto typed_vals = third_party::SArray<Val>(vals);
     CHECK_EQ(typed_keys.size(), typed_vals.size());
     // TODO
-    for(size_t index=0;index<typed_keys;index++){
+    for(size_t index=0;index<typed_keys.size();index++){
             storage_[typed_keys[index]]+=typed_vals[index];
     }
     LOG(INFO) << "Test by Andy";
