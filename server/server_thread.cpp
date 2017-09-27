@@ -5,7 +5,7 @@
 namespace csci5570 {
 
 void ServerThread::RegisterModel(uint32_t model_id, std::unique_ptr<AbstractModel>&& model) {
-	CHECK(models_.find(model_id)) = models_.end());
+	CHECK(models_.find(model_id)) == models_.end());
 	models_.insert(std::make_pair(model_id, std::move(model)));
 }
 
