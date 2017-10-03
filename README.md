@@ -33,6 +33,11 @@ make -j4      # build all the targets
 * Implement server\_thread.cpp according to the information given in server\_thread\_test.cpp.
 * Implement map\_storage.hpp according to the information given in map\_storage\_test.cpp.
 
+## Tutorial 4
+* Check base/abstract_partition_manager.hpp and implement your parititoning strategies
+* You should have tried implementing MapStorage last week. You may try other storage method such as vector.
+* Write a small program to link the paritition manager with the storages and to initialize storages associated with different server threads
+
 ### Some tools: 
 * [glog](http://rpg.ifi.uzh.ch/docs/glog.html). You may use `GLOG_logtostderr=1 ./HuskyUnitTest` to print the `LOG(INFO)` information to the console.
 * [gtest](https://github.com/google/googletest/blob/master/googletest/docs/Primer.md).
