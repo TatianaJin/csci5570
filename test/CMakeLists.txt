@@ -4,6 +4,7 @@ add_library(csci5570 STATIC
   $<TARGET_OBJECTS:server-objs> 
   $<TARGET_OBJECTS:comm-objs> 
   $<TARGET_OBJECTS:base-objs>
+  $<TARGET_OBJECTS:io-objs>
   )
 
 # Unit Test
@@ -17,3 +18,11 @@ target_link_libraries(HuskyUnitTest ${GTEST_LIBRARIES})
 target_link_libraries(HuskyUnitTest ${GMOCK_LIBRARIES})
 set_property(TARGET HuskyUnitTest PROPERTY CXX_STANDARD 11)
 add_dependencies(HuskyUnitTest ${external_project_dependencies})
+
+if(LIBHDFS3_FOUND)
+	add_executable(TestRead test_hdfs_read.cpp)
+	target_link_libraries(TestRead csci5570)
+	target_link_libraries(TestRead ${HUSKY_EXTERNAL_LIB})
+	set_property(TARGET TestRead PROPERTY CXX_STANDARD 11)
+	add_dependencies(TestRead ${external_project_dependencies})
+endif(LIBHDFS3_FOUND)
