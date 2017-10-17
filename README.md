@@ -46,6 +46,7 @@ make -j4      # build all the targets
 
 ## Tutorial 6
 * Check the io folder and understand how to connect to HDFS and coordinate data loading among workers
+* Take a look at test/test_hdfs_read.cpp and see how the connector may be used to load data
 * Check the lib folder for the abstraction of data loaders and labeled sample
 * Implement the data loaders and parsers. Understanding the producer-consumer paradigm may help
 
