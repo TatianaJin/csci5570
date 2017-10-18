@@ -24,9 +24,9 @@ class AbstractPartitionManager {
   const std::vector<uint32_t>& GetServerThreadIds() const;
 
   // slice keys into <server_id, key_partition> pairs
-  virtual void Slice(const Keys& keys, std::vector<std::pair<int, Keys>>* sliced) = 0;
+  virtual void Slice(const Keys& keys, std::vector<std::pair<int, Keys>>* sliced) const = 0;
   // slice key-value pairs into <server_id, key_value_partition> pairs
-  virtual void Slice(const KVPairs& kvs, std::vector<std::pair<int, KVPairs>>* sliced) = 0;
+  virtual void Slice(const KVPairs& kvs, std::vector<std::pair<int, KVPairs>>* sliced) const = 0;
 
  protected:
   std::vector<uint32_t> server_thread_ids_;
