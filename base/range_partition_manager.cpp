@@ -21,6 +21,7 @@ namespace csci5570 {
 
 	}
 	void RangePartitionManager::Slice(const Keys& keys, std::vector<std::pair<int, Keys>>* sliced) {
+		LOG(INFO) << "Test by Andy";
 		const int keys_size = keys.size();//Num of keys
 		const int servers_size = GetNumServers();//Num of Server
 		int kvs_per_server = keysCount / servers_size;	//keys per server
