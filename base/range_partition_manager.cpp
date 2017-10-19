@@ -1,5 +1,5 @@
 #pragma once
-#include "base/range_partition_manager.cpp"
+#include "base/range_partition_manager.hpp"
 
 namespace csci5570 {
 
