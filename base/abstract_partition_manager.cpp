@@ -6,6 +6,9 @@ namespace csci5570 {
 	/*
 	 * Implments the interface of a PartitionManager which provides the model partitioning scheme
 	 */
+	AbstractPartitionManager(const std::vector<uint32_t>& server_thread_ids) : server_thread_ids_(server_thread_ids) {
+		server_thread_ids_ = server_thread_ids;
+	}
 	size_t GetNumServers() const {
 		return server_thread_ids_.size();
 	}

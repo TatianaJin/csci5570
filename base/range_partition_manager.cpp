@@ -30,11 +30,11 @@ namespace csci5570 {
 		pair<int, keys> tempPair;
 		//Keys on first server to n-1 server
 		for (int i = 0; i < serverCount - 1; i++) {
-			tempPair = { (this->GetServerThreadIds)[i] ,keys.segment(i*keys_per_server,(i + 1)*keys_per_server };
+			tempPair = { (this->GetServerThreadIds())[i] ,keys.segment(i*keys_per_server,(i + 1)*keys_per_server };
 			sliced->push_back(tempPair);
 		}
 		//Keys on the last server
-		tempPair = { (this->GetServerThreadIds)[servers_size - 1],keys.segment((servers_size - 1)*keys_per_server,keys.size()) };
+		tempPair = { (this->GetServerThreadIds())[servers_size - 1],keys.segment((servers_size - 1)*keys_per_server,keys.size()) };
 		sliced->push_back(tempPair);
 
 	}
