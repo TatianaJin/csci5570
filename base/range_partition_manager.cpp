@@ -18,7 +18,7 @@ namespace csci5570 {
 
 	RangePartitionManager::RangePartitionManager(const std::vector<uint32_t>& server_thread_ids, const std::vector<third_party::Range>& ranges)
 		: AbstractPartitionManager(server_thread_ids) {
-		ranges_ = ranges;
+		this->ranges_ = ranges;
 
 	}
 	void RangePartitionManager::Slice(const Keys& keys, std::vector<std::pair<int, Keys>>* sliced) const override {
