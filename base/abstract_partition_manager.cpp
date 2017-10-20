@@ -14,7 +14,7 @@ namespace csci5570 {
 		size_t AbstractPartitionManager::GetNumServers() const {
 			return server_thread_ids_.size();
 		}
-		const AbstractPartitionManager::std::vector<uint32_t>& GetServerThreadIds() const {
+		const std::vector<uint32_t>& AbstractPartitionManager::GetServerThreadIds() const {
 			return server_thread_ids_;
 		}
 		//// slice keys into <server_id, key_partition> pairs
