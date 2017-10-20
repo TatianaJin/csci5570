@@ -36,7 +36,7 @@ namespace csci5570 {
 				}
 			}
 			if (tempKeys.size() > 0) {
-				std::pair<int, Keys> tempPair=(this->server_thread_ids_[j], tempKeys);
+				std::pair<int, Keys> tempPair (this->server_thread_ids_[j], tempKeys);
 				sliced.push_back(tempPair);
 			}
 
