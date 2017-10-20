@@ -22,7 +22,7 @@ namespace csci5570 {
 	}
 
 	void RangePartitionManager::Slice(const Keys& keys, std::vector<std::pair<int, Keys>>* sliced) const {
-		LOG(INFO) << "Test by Andy 1";
+		//LOG(INFO) << "Test by Andy 1";
 		const int keys_size = keys.size();//Num of keys
 		const int range_size = this->ranges_.size();
 
