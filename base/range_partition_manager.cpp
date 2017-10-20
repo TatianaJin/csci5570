@@ -46,24 +46,28 @@ namespace csci5570 {
 	void RangePartitionManager::Slice(const KVPairs& kvs, std::vector<std::pair<int, KVPairs>>* sliced)const  {
 		LOG(INFO) << "Test by Andy 2";
 		Keys keys = kvs.first;
-		third_party::SArray<double> vals = kvs.second;
+		third_party::SArray<auto> vals = kvs.second;
 		const int keys_size = keys.size();//Num of keys
 		LOG(INFO) <<"Keys size"<< keys_size;
 		const int range_size = this->ranges_.size();
 		LOG(INFO) <<"Range size"<< range_size;
 		for (int j = 0; j < range_size; j++)
 		{
-			KVPairs tempKVs;
+			Keys temp_keys;
+			third_party::SArray<auto> temp_vals;
 			for (int i = 0; i < keys_size; i++) {
 				LOG(INFO) <<i<<"Key:"<< keys[i]<<" Val:"<<vals[i];
+				
 				if (keys[i] >= this->ranges_[j].begin() && keys[i] < this->ranges_[j].end()) {
 					//tempKVs.push_back(kvs[i]);
+					temp_keys.push_back(keys[i]);
+					temp_vals.push_back(vals[i]);
 				}
 			}
-			//if (tempKeys.size() > 0) {
-			//	std::pair<int, tempKVs> tempPair(this->server_thread_ids_[j], tempKVs);
-			//	//sliced->push_back(tempPair);
-			//}
+			if (temp_keys.size() > 0) {
+				std::pair<int, KVPairs> temp_pair(this->server_thread_ids_[j], std::make_pair(temp_keys, temp_vals));
+				sliced->push_back(temp_pair);
+			}
 
 		}
 	}
