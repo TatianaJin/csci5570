@@ -1,3 +1,4 @@
+#pragma once
 #include "base/abstract_partition_manager.hpp"
 #include "glog/logging.h"
 
@@ -6,7 +7,7 @@ namespace csci5570 {
 	/*
 	 * Implments the interface of a PartitionManager which provides the model partitioning scheme
 	 */
-	
+	                              
 		AbstractPartitionManager::AbstractPartitionManager(const std::vector<uint32_t>& server_thread_ids) : server_thread_ids_(server_thread_ids) {
 			this->server_thread_ids_ = server_thread_ids;
 		}
