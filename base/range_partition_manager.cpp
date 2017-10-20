@@ -38,20 +38,19 @@ namespace csci5570 {
 
 	}
 	void RangePartitionManager::Slice(const KVPairs& kvs, std::vector<std::pair<int, KVPairs>>* sliced)  const override {
-		EXPECT_EQ(kvs.first.size(), kvs.second.size());
-		const int kvs_size = kvs.size();//Num of keys
-		const int servers_size = GetNumServers();//Num of Server
-		int kvs_per_server = kvs_size / servers_size;	//keys per server
-														//Range slice
-														//Keys on first server to n-1 server
-		std::pair<int, keys> tempPair;
-		for (int i = 0; i < serverCount - 1; i++) {
-			tempPair = { GetServerThreadIds[i] ,kvs.segment(i*kvs_per_server,(i + 1)*kvs_per_server };
-			sliced->push_back(tempPair);
-		}
-		//Keys on the last server
-		tempPair = { GetServerThreadIds[servers_size - 1],kvs.segment((servers_size - 1)*kvs_per_server,keys.size()) };
-		sliced->push_back(tempPair);
+		//const int kvs_size = kvs.size();//Num of keys
+		//const int servers_size = GetNumServers();//Num of Server
+		//int kvs_per_server = kvs_size / servers_size;	//keys per server
+		//												//Range slice
+		//												//Keys on first server to n-1 server
+		//std::pair<int, keys> tempPair;
+		//for (int i = 0; i < serverCount - 1; i++) {
+		//	tempPair = { GetServerThreadIds[i] ,kvs.segment(i*kvs_per_server,(i + 1)*kvs_per_server };
+		//	sliced->push_back(tempPair);
+		//}
+		////Keys on the last server
+		//tempPair = { GetServerThreadIds[servers_size - 1],kvs.segment((servers_size - 1)*kvs_per_server,keys.size()) };
+		//sliced->push_back(tempPair);
 
 	}
 
