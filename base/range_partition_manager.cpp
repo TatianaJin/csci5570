@@ -32,7 +32,7 @@ namespace csci5570 {
 			Keys tempKeys;
 			for (int i = 0; i < keys_size; i++) {
 				if (keys[i] >= this->ranges_[j].begin() && keys[i] < this->ranges_[j].end()) {
-					tempKeys.insert(tempKeys.end(), keys[i]);
+					tempKeys.push_back(keys[i]);
 				}
 			}
 			if (tempKeys.size() > 0) {
