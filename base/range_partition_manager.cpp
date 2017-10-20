@@ -25,10 +25,10 @@ namespace csci5570 {
 		LOG(INFO) << "Test by Andy";
 		std::pair<int, Keys> tempPair;
 		const int keys_size = keys.size();//Num of keys
-		const int range_size = this->ranges.size();
+		const int range_size = this->ranges_.size();
 		for (int i = 0; i < keys_size; i++) 
 			for (int j = 0; j < range_size; j++) {
-				if (keys[i] >= this->ranges_[j].first && keys[i] < this->range_[j].second) {
+				if (keys[i] >= this->ranges_[j].first && keys[i] < this->ranges_[j].second) {
 					tempPair = { this->server_thread_ids_[j],keys[i] };
 					sliced->push_back(tempPair);
 				}
