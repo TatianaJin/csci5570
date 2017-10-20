@@ -59,10 +59,10 @@ namespace csci5570 {
 					//tempKVs.push_back(kvs[i]);
 				}
 			}
-			if (tempKeys.size() > 0) {
-				std::pair<int, tempKVs> tempPair(this->server_thread_ids_[j], tempKVs);
-				//sliced->push_back(tempPair);
-			}
+			//if (tempKeys.size() > 0) {
+			//	std::pair<int, tempKVs> tempPair(this->server_thread_ids_[j], tempKVs);
+			//	//sliced->push_back(tempPair);
+			//}
 
 		}
 	}
