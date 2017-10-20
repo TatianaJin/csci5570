@@ -28,7 +28,7 @@ namespace csci5570 {
 		const int range_size = this->ranges_.size();
 		for (int i = 0; i < keys_size; i++) 
 			for (int j = 0; j < range_size; j++) {
-				if (keys[i] >= this->ranges_[j].first && keys[i] < this->ranges_[j].second) {
+				if (keys[i] >= this->ranges_[j].begin() && keys[i] < this->ranges_[j].end()) {
 					tempPair = { this->server_thread_ids_[j],keys[i] };
 					sliced->push_back(tempPair);
 				}
