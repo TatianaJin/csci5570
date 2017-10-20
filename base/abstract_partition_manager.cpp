@@ -1,4 +1,3 @@
-#pragma once
 #include "base/abstract_partition_manager.hpp"
 #include "glog/logging.h"
 

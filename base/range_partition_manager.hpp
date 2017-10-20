@@ -13,8 +13,7 @@ namespace csci5570 {
 
 	class RangePartitionManager : public AbstractPartitionManager {
 	public:
-		RangePartitionManager(const std::vector<uint32_t>& server_thread_ids, const std::vector<third_party::Range>& ranges)
-			: AbstractPartitionManager(server_thread_ids);
+		RangePartitionManager(const std::vector<uint32_t>& server_thread_ids, const std::vector<third_party::Range>& ranges);
 
 		void Slice(const Keys& keys, std::vector<std::pair<int, Keys>>* sliced) const override;
 
