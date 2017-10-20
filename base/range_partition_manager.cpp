@@ -29,7 +29,7 @@ namespace csci5570 {
 		for (int i = 0; i < keys_size; i++)
 			for (int j = 0; j < range_size; j++) {
 				if (keys[i] >= this->ranges_[j].begin() && keys[i] < this->ranges_[j].end()) {
-					tempPair = std::make_pair(this->server_thread_ids_)[j],keys[i]);
+					tempPair = std::make_pair((this->server_thread_ids_)[j],keys[i]);
 					sliced->push_back(tempPair);
 				}
 			}
