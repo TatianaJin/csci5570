@@ -23,18 +23,24 @@ namespace csci5570 {
 
 	void RangePartitionManager::Slice(const Keys& keys, std::vector<std::pair<int, Keys>>* sliced) const {
 		LOG(INFO) << "Test by Andy";
-		
+
 		const int keys_size = keys.size();//Num of keys
 		const int range_size = this->ranges_.size();
-		for (int i = 0; i < keys_size; i++)
-			for (int j = 0; j < range_size; j++) {
+
+		for (int j = 0; j < range_size; j++)
+		{
+			Keys tempKeys;
+			for (int i = 0; i < keys_size; i++) {
 				if (keys[i] >= this->ranges_[j].begin() && keys[i] < this->ranges_[j].end()) {
-					std::pair<int, Keys> tempPair ((this->server_thread_ids_)[j], keys[i]);
-					//tempPair = std::make_pair((this->server_thread_ids_)[j],keys[i]);
-					sliced->push_back(tempPair);
+					tempKeys.insert(tempKeys.end(), keys[i]);
 				}
 			}
+			if (tempKeys.size() > 0) {
+				std::pair<int, Keys> tempPair=(this->server_thread_ids_[j], tempKeys);
+				sliced.push_back(tempPair);
+			}
 
+		}
 
 	}
 	//void RangePartitionManager::Slice(const Keys& keys, std::vector<std::pair<int, Keys>>* sliced) const  {
