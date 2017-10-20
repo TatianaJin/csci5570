@@ -44,22 +44,19 @@ namespace csci5570 {
 	}
 
 	void RangePartitionManager::Slice(const KVPairs& kvs, std::vector<std::pair<int, KVPairs>>* sliced)const  {
-		LOG(INFO) << "Test by Andy 2";
+		//LOG(INFO) << "Test by Andy 2";
 		Keys keys = kvs.first;
-		third_party::SArray<double> vals = kvs.second;
 		const int keys_size = keys.size();//Num of keys
-		LOG(INFO) <<"Keys size"<< keys_size;
+		//LOG(INFO) <<"Keys size"<< keys_size;
 		const int range_size = this->ranges_.size();
-		LOG(INFO) <<"Range size"<< range_size;
+		//LOG(INFO) <<"Range size"<< range_size;
 		for (int j = 0; j < range_size; j++)
 		{
 			Keys temp_keys;
-			third_party::SArray<double> temp_vals;
+			third_party::SArray<auto> temp_vals;
 			for (int i = 0; i < keys_size; i++) {
-				LOG(INFO) <<i<<"Key:"<< keys[i]<<" Val:"<<vals[i];
-				
 				if (keys[i] >= this->ranges_[j].begin() && keys[i] < this->ranges_[j].end()) {
-					//tempKVs.push_back(kvs[i]);
+
 					temp_keys.push_back(keys[i]);
 					temp_vals.push_back(vals[i]);
 				}
