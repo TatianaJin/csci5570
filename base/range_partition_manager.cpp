@@ -29,7 +29,7 @@ namespace csci5570 {
 		std::pair<int, Keys> tempPair;
 		//Keys on first server to n-1 server
 		for (int i = 0; i < servers_size - 1; i++) {
-			tempPair = { (this->GetServerThreadIds())[i] ,keys.segment(i*keys_per_server,(i + 1)*keys_per_server };
+			tempPair = { (this->GetServerThreadIds())[i] ,keys.segment(i*keys_per_server,(i + 1)*keys_per_server) };
 			sliced->push_back(tempPair);
 		}
 		//Keys on the last server
