@@ -48,8 +48,9 @@ namespace csci5570 {
 		Keys keys = kvs.first;
 		
 		const int keys_size = keys.size();//Num of keys
+		LOG(INFO) << keys_size;
 		const int range_size = this->ranges_.size();
-
+		LOG(INFO) << range_size;
 		for (int j = 0; j < range_size; j++)
 		{
 			KVPairs tempKVs;
