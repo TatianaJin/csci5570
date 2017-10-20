@@ -26,9 +26,9 @@ namespace csci5570 {
 		const int servers_size = this->GetNumServers();//Num of Server
 		int keys_per_server = keys_size / servers_size;	//keys per server
 														//Range slice			
-		std::pair<int, keys> tempPair;
+		std::pair<int, Keys> tempPair;
 		//Keys on first server to n-1 server
-		for (int i = 0; i < serverCount - 1; i++) {
+		for (int i = 0; i < servers_size - 1; i++) {
 			tempPair = { (this->GetServerThreadIds())[i] ,keys.segment(i*keys_per_server,(i + 1)*keys_per_server };
 			sliced->push_back(tempPair);
 		}
