@@ -1,4 +1,3 @@
-#pragma once
 #include "base/range_partition_manager.hpp"
 
 namespace csci5570 {
@@ -21,7 +20,7 @@ namespace csci5570 {
 		this->ranges_ = ranges;
 
 	}
-	void RangePartitionManager::Slice(const Keys& keys, std::vector<std::pair<int, Keys>>* sliced) const override {
+	void RangePartitionManager::Slice(const Keys& keys, std::vector<std::pair<int, Keys>>* sliced) override {
 		LOG(INFO) << "Test by Andy";
 		const int keys_size = keys.size();//Num of keys
 		const int servers_size = this->GetNumServers();//Num of Server
