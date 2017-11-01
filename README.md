@@ -21,6 +21,7 @@ make -j4      # build all the targets
 ./HuskyUnitTest  # run all unit tests
 ./HuskyUnitTest --gtest_filter=TestServerThread.RegisterModel  # run a specific test
 ```
+![Mind map](mindmap.svg)
 
 ## Tutorial 2
 * The mailbox is provided as a bottom layer communication module
@@ -55,7 +56,7 @@ make -j4      # build all the targets
 * Check the pending buffer and progress tracker interface
 * Implement ASP, BSP, and SSP models
 
-## Tutorial 7
+## Tutorial 8
 * Check the tests and complete engine.cpp, info.hpp, simple_id_mapper.cpp, and worker_spec.cpp
 * Write a script to launch the system on the cluster
 
