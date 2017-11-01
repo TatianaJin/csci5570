@@ -33,11 +33,9 @@ struct Info {
    * @param table_id    the model id
    */
   template <typename Val>
-  KVClientTable<Val> CreateKVClientTable(uint32_t table_id) const;
+  KVClientTable<Val> CreateKVClientTable(uint32_t table_id) const {
+    // TODO
+  }
 };
 
-template <typename Val>
-KVClientTable<Val> Info::CreateKVClientTable(uint32_t table_id) const {
-  // TODO
-}
 }  // namespace csci5570

@@ -55,6 +55,10 @@ make -j4      # build all the targets
 * Check the pending buffer and progress tracker interface
 * Implement ASP, BSP, and SSP models
 
+## Tutorial 7
+* Check the tests and complete engine.cpp, info.hpp, simple_id_mapper.cpp, and worker_spec.cpp
+* Write a script to launch the system on the cluster
+
 ### Some tools: 
 * [glog](http://rpg.ifi.uzh.ch/docs/glog.html). You may use `GLOG_logtostderr=1 ./HuskyUnitTest` to print the `LOG(INFO)` information to the console.
 * [gtest](https://github.com/google/googletest/blob/master/googletest/docs/Primer.md).

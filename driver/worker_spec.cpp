@@ -3,10 +3,6 @@
 
 namespace csci5570 {
 
-const uint32_t WorkerSpec::kMaxNodeId;
-const uint32_t WorkerSpec::kMaxThreadsPerNode;
-const uint32_t WorkerSpec::kMaxBgThreadsPerNode;
-
 WorkerSpec::WorkerSpec(const std::vector<WorkerAlloc>& worker_alloc) {
   // TODO
 }

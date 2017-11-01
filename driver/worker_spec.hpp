@@ -1,6 +1,7 @@
 #pragma once
 
 #include "driver/ml_task.hpp"
+#include "driver/simple_id_mapper.hpp"
 
 #include <map>
 #include <set>
@@ -12,6 +13,8 @@ namespace csci5570 {
  * node_id: 0, 1
  * worker_id for this task: 0, 1, 2 .. consecutive
  * thread_id: global worker thread id
+ *
+ * worker here refers to the user threads to run UDF
  */
 class WorkerSpec {
  public:
@@ -20,7 +23,7 @@ class WorkerSpec {
   WorkerSpec(const std::vector<WorkerAlloc>& worker_alloc);
 
   /**
-   * Check if the local process is allocatd any worker
+   * Check if the local process is allocatd any worker for a task
    */
   bool HasLocalWorkers(uint32_t node_id) const;
 
@@ -38,16 +41,22 @@ class WorkerSpec {
    * Return the ids of threads on the local process
    */
   std::map<uint32_t, std::vector<uint32_t>> GetNodeToWorkers();
+
+  /**
+   * Returns all worker threads
+   */
   std::vector<uint32_t> GetAllThreadIds();
 
+  /**
+   * Register worker id (specific to a task) along with the corresponding thread id
+   */
   void InsertWorkerIdThreadId(uint32_t worker_id, uint32_t thread_id);
 
-  static const uint32_t kMaxNodeId = 1000;
-  static const uint32_t kMaxThreadsPerNode = 1000;
-  // BgThreads include server threads, worker helper threads and model init threads.
-  static const uint32_t kMaxBgThreadsPerNode = 100;
-
  private:
+  /**
+   * Initiates the worker specification with the specified allocation
+   * Update worker_to_node_, node_to_workers_ and num_workers_
+   */
   void Init(const std::vector<WorkerAlloc>& worker_alloc);
 
   // {worker_id: node_id}: {0,0}, {1,0}, {2,0}, {3,1}, {4,1}
@@ -63,7 +72,7 @@ class WorkerSpec {
   std::map<uint32_t, std::vector<uint32_t>> node_to_threads_;
   // {100, 101, 102, 1100, 1101}
   std::set<uint32_t> thread_ids_;
-  uint32_t num_workers = 0;
+  uint32_t num_workers_ = 0;
 };
 
 }  // namespace csci5570

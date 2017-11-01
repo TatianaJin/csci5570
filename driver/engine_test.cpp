@@ -7,12 +7,12 @@
 namespace csci5570 {
 namespace {
 
-/*
+/**
  * Test for Engine which depends on
  *  Mailbox
- *  WorkerHelperThread
+ *  WorkerThread
  *  ServerThread
- *  AppBlocker
+ *  AbstractCallbackRunner
  *  ...
  *
  *  The failure of the test may be caused by each of these components.
@@ -33,7 +33,7 @@ class FakeIdMapper : public AbstractIdMapper {
 };
 
 TEST_F(TestEngine, Construct) {
-  Node node{0, "localhost", 12353};
+  Node node{0, "localhost", 12353};  // node: id 0, host localhost, port 12353
   Engine engine(node, {node});
 }
 
@@ -53,7 +53,7 @@ TEST_F(TestEngine, StartEverything) {
   engine.StopEverything();
 }
 
-TEST_F(TestEngine, MultipleStartEverything) {
+TEST_F(TestEngine, MultipleStartEverything) {  // start three engines on the localhost
   std::vector<Node> nodes{{0, "localhost", 12353}, {1, "localhost", 12354}, {2, "localhost", 12355}};
 
   std::vector<std::thread> threads(nodes.size());
@@ -75,11 +75,11 @@ TEST_F(TestEngine, SimpleTaskMapStorage) {
   // start
   engine.StartEverything();
 
-  engine.CreateTable<double>(0, {{0, 10}}, ModelType::SSP, StorageType::Map);  // table 0, range [0,10)
+  auto table_id = engine.CreateTable<double>(ModelType::SSP, StorageType::Map);  // table 0
   engine.Barrier();
   MLTask task;
   task.SetWorkerAlloc({{0, 3}});  // 3 workers on node 0
-  task.SetTables({0});            // Use table 0
+  task.SetTables({table_id});     // Use table 0
   task.SetLambda([](const Info& info) { LOG(INFO) << "Hi"; });
   engine.Run(task);
 
@@ -87,25 +87,7 @@ TEST_F(TestEngine, SimpleTaskMapStorage) {
   engine.StopEverything();
 }
 
-TEST_F(TestEngine, SimpleTaskVectorStorage) {
-  Node node{0, "localhost", 12353};
-  Engine engine(node, {node});
-  // start
-  engine.StartEverything();
-
-  engine.CreateTable<double>(0, {{0, 10}}, ModelType::SSP, StorageType::Vector);  // table 0, range [0,10)
-  engine.Barrier();
-  MLTask task;
-  task.SetWorkerAlloc({{0, 3}});  // 3 workers on node 0
-  task.SetTables({0});            // Use table 0
-  task.SetLambda([](const Info& info) { LOG(INFO) << "Hi"; });
-  engine.Run(task);
-
-  // stop
-  engine.StopEverything();
-}
-
-TEST_F(TestEngine, MultipleTasks) {
+TEST_F(TestEngine, MultipleTasks) {  // simulate multiple instances of engine running a distributed task
   std::vector<Node> nodes{{0, "localhost", 12353}, {1, "localhost", 12354}, {2, "localhost", 12355}};
 
   std::vector<std::thread> threads(nodes.size());
@@ -115,13 +97,12 @@ TEST_F(TestEngine, MultipleTasks) {
       // start
       engine.StartEverything();
 
-      engine.CreateTable<double>(0, {{0, 10}, {10, 20}, {20, 30}}, ModelType::SSP,
-                                 StorageType::Map);  // table 0, range [0,10), [10, 20), [20, 30)
+      auto table_id = engine.CreateTable<double>(ModelType::SSP, StorageType::Map);
       engine.Barrier();
       MLTask task;
       // 3 workers on node 0, 2 workers on node 1, 3 workers on node 2
       task.SetWorkerAlloc({{0, 3}, {1, 2}, {2, 3}});
-      task.SetTables({0});  // Use table 0
+      task.SetTables({table_id});  // Use table 0
       task.SetLambda([](const Info& info) { LOG(INFO) << "Hi"; });
       engine.Run(task);
 
@@ -140,8 +121,7 @@ TEST_F(TestEngine, KVClientTableMapStorage) {
   // start
   engine.StartEverything();
 
-  const int kTableId = 0;
-  engine.CreateTable<double>(kTableId, {{0, 10}}, ModelType::SSP, StorageType::Map);  // table 0, range [0,10)
+  const auto kTableId = engine.CreateTable<double>(ModelType::SSP, StorageType::Map);  // table 0
   engine.Barrier();
   MLTask task;
   task.SetWorkerAlloc({{0, 3}});  // 3 workers on node 0

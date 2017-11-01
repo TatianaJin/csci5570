@@ -31,7 +31,7 @@ class Engine {
    * The flow of starting the engine:
    * 1. Create an id_mapper and a mailbox
    * 2. Start Sender
-   * 3. Create ServerThreads, WorkerThreads and ModelInitThread
+   * 3. Create ServerThreads and WorkerThreads
    * 4. Register the threads to mailbox through ThreadsafeQueue
    * 5. Start the communication threads: bind and connect to all other nodes
    *
@@ -42,7 +42,6 @@ class Engine {
   void CreateMailbox();
   void StartServerThreads();
   void StartWorkerThreads();
-  void StartModelInitThread();
   void StartMailbox();
   void StartSender();
 
@@ -51,12 +50,11 @@ class Engine {
    * 1. Stop the Sender
    * 2. Stop the mailbox: by Barrier() and then exit
    * 3. The mailbox will stop the corresponding registered threads
-   * 4. Stop the ServerThreads, WorkerThreads and ModelInitThread
+   * 4. Stop the ServerThreads and WorkerThreads
    */
   void StopEverything();
   void StopServerThreads();
   void StopWorkerThreads();
-  void StopModelInitThread();
   void StopSender();
   void StopMailbox();
 
@@ -73,17 +71,42 @@ class Engine {
 
   /**
    * Create the partitions of a model on the local servers
+   * 1. Assign a table id (incremental and consecutive)
+   * 2. Register the partition manager to the model
+   * 3. For each local server thread maintained by the engine
+   *    a. Create a storage according to <storage_type>
+   *    b. Create a model according to <model_type>
+   *    c. Register the model to the server thread
    *
-   * @param table_id    the model id
-   * @param model_type
-   * @param storage_type
-   * @param model_staleness
+   * @param partition_manager   the model partition manager
+   * @param model_type          the consistency of model - bsp, ssp, asp
+   * @param storage_type        the storage type - map, vector...
+   * @param model_staleness     the staleness for ssp model
+   * @return                    the created table(model) id
    */
   template <typename Val>
-  void CreateTable(uint32_t table_id, ModelType model_type, StorageType storage_type, int model_staleness = 0);
+  uint32_t CreateTable(std::unique_ptr<AbstractPartitionManager> partition_manager, ModelType model_type,
+                       StorageType storage_type, int model_staleness = 0) {
+    // TODO
+  }
 
   /**
-   * Reset workers in models so that each model knows the workers with the right of access
+   * Create the partitions of a model on the local servers using a default partitioning scheme
+   * 1. Create a default partition manager
+   * 2. Create a table with the partition manager
+   *
+   * @param model_type          the consistency of model - bsp, ssp, asp
+   * @param storage_type        the storage type - map, vector...
+   * @param model_staleness     the staleness for ssp model
+   * @return                    the created table(model) id
+   */
+  template <typename Val>
+  uint32_t CreateTable(ModelType model_type, StorageType storage_type, int model_staleness = 0) {
+    // TODO
+  }
+
+  /**
+   * Reset workers in the specified model so that each model knows the workers with the right of access
    */
   void InitTable(uint32_t table_id, const std::vector<uint32_t>& worker_ids);
 
@@ -96,8 +119,19 @@ class Engine {
    */
   void Run(const MLTask& task);
 
+  /**
+   * Returns the server thread ids
+   */
+  std::vector<uint32_t> GetServerThreadIds() { return id_mapper_->GetAllServerThreads(); }
+
  private:
-  void RegisterRangeManager(uint32_t table_id, const std::vector<third_party::Range>& ranges);
+  /**
+   * Register partition manager for a model to the engine
+   *
+   * @param table_id            the model id
+   * @param partition_manager   the partition manager for the specific model
+   */
+  void RegisterPartitionManager(uint32_t table_id, std::unique_ptr<AbstractPartitionManager> partition_manager);
 
   std::map<uint32_t, std::unique_ptr<AbstractPartitionManager>> partition_manager_map_;
   // nodes
@@ -112,6 +146,7 @@ class Engine {
   std::unique_ptr<AbstractWorkerThread> worker_thread_;
   // server elements
   std::vector<ServerThread> server_thread_group_;
+  size_t model_count_ = 0;
 };
 
 }  // namespace csci5570
