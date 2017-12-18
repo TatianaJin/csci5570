@@ -23,6 +23,23 @@ make -j4      # build all the targets
 ```
 ![Mind map](mindmap.svg)
 
+## Dec 18 Hints for the driver part
+Here I highlight some hints gave in previous tutorials / code comments
+
+### Worker threads in Engine, SimpleIdMapper, Info
+There are two kinds of worker threads:
+1. User worker thread (spawned in Engine::Run). User worker threads run the UDF specified in tasks, i.e. carry out the main computation. The worker_id and thread_id of each user worker thread is allocated via Engine::AllocateWorkers and can be fetched from the returned WorkerSpec instance. The worker_id and thread_id should be put into an Info instance and passed to the UDF.
+2. Worker helper thread (corresponding to Engine::worker_thread_, SimpleIdMapper::kWorkerHelperThreadId). This thread is responsible to invoke the callbacks registered by KVClientTable through an AbstractCallbackRunner instance. Namely, this thread works in the background to help handle the reponses to the get requests issued by the user worker threads. Please notice that the AbstractCallbackRunner should contain the callbacks for each KVClientTable instance owned by the user workers. Do not just copy the FakeCallbackRunner I implemented in the test files, which has only two callbacks.
+
+### The constants in SimpleIdMapper
+There are four constants: kMaxNodeId, kMaxThreadsPerNode, kMaxBgThreadsPerNode, and kWorkerHelperThreadId.
+1. The id range for each node i is [i * kMaxThreadsPerNode, (i+1) * kMaxThreadsPerNode).
+2. The server threads use the range [i * kMaxThreadsPerNode, i * kMaxThreadsPerNode + kWorkerHelperThreadId), and server ids are allocated using SimpleIdMapper::Init.
+3. The worker threads (in the background, also referred as worker helper threads) use the range [i * kMaxThreadsPerNode + kWorkerHelperThreadId, i * kMaxThreadsPerNode + kMaxBgThreadsPerNode), also allocated using SimpleIdMapper::Init.
+4. The user worker threads created when running the task use the range [i * kMaxThreadsPerNode + kMaxBgThreadsPerNode, i * kMaxThreadsPerNode + kMaxThreadsPerNode). The user worker ids are manipulated by SimpleIdMapper::AllocateWorkerThread and SimpleIdMapper::DeallocateWorkerThread.
+
+The server thread and worker helper thread should be allocated in SimpleIdMapper::Init. SimpleIdMapper::AllocateWorkerThread  is for user worker thread.
+
 ## Tutorial 2
 * The mailbox is provided as a bottom layer communication module
 * The prototypes of server threads, worker threads, and communication threads are also provided for your reference
