@@ -33,7 +33,6 @@ class FakePartitionManager : public AbstractPartitionManager {
   }
 
   void Slice(const KVPairs& kvs, std::vector<std::pair<int, KVPairs>>* sliced) const override {
-    EXPECT_EQ(kvs.first.size(), kvs.second.size());
     size_t n = kvs.first.size();
     sliced->resize(2);
     auto pos = std::lower_bound(kvs.first.begin(), kvs.first.end(), split_) - kvs.first.begin();
@@ -118,17 +117,17 @@ TEST_F(TestKVClientTable, Init) {
   ThreadsafeQueue<Message> queue;
   FakePartitionManager manager({0, 1}, 4);
   FakeCallbackRunner callback_runner;
-  KVClientTable<float> table(kTestAppThreadId, kTestModelId, &queue, &manager, &callback_runner);
+  KVClientTable<double> table(kTestAppThreadId, kTestModelId, &queue, &manager, &callback_runner);
 }
 
 TEST_F(TestKVClientTable, Add) {
   ThreadsafeQueue<Message> queue;
   FakePartitionManager manager({0, 1}, 4);
   FakeCallbackRunner callback_runner;
-  KVClientTable<float> table(kTestAppThreadId, kTestModelId, &queue, &manager, &callback_runner);
+  KVClientTable<double> table(kTestAppThreadId, kTestModelId, &queue, &manager, &callback_runner);
 
   std::vector<Key> keys = {3, 4, 5, 6};
-  std::vector<float> vals = {0.1, 0.1, 0.1, 0.1};
+  std::vector<double> vals = {0.1, 0.1, 0.1, 0.1};
   table.Add(keys, vals);  // {3,4,5,6} -> {3}, {4,5,6}
   Message m1, m2;
   queue.WaitAndPop(&m1);
@@ -143,10 +142,10 @@ TEST_F(TestKVClientTable, Add) {
   res_keys = m1.data[0];
   ASSERT_EQ(res_keys.size(), 1);  // key 3
   EXPECT_EQ(res_keys[0], 3);
-  third_party::SArray<float> res_vals;
+  third_party::SArray<double> res_vals;
   res_vals = m1.data[1];
   ASSERT_EQ(res_vals.size(), 1);  // val .1
-  EXPECT_FLOAT_EQ(res_vals[0], float(0.1));
+  EXPECT_DOUBLE_EQ(res_vals[0], double(0.1));
 
   EXPECT_EQ(m2.meta.sender, kTestAppThreadId);
   EXPECT_EQ(m2.meta.recver, 1);
@@ -160,9 +159,9 @@ TEST_F(TestKVClientTable, Add) {
   EXPECT_EQ(res_keys[0], 4);
   EXPECT_EQ(res_keys[1], 5);
   EXPECT_EQ(res_keys[2], 6);
-  EXPECT_FLOAT_EQ(res_vals[0], float(0.1));
-  EXPECT_FLOAT_EQ(res_vals[1], float(0.1));
-  EXPECT_FLOAT_EQ(res_vals[2], float(0.1));
+  EXPECT_DOUBLE_EQ(res_vals[0], double(0.1));
+  EXPECT_DOUBLE_EQ(res_vals[1], double(0.1));
+  EXPECT_DOUBLE_EQ(res_vals[2], double(0.1));
 }
 
 TEST_F(TestKVClientTable, Get) {
@@ -170,11 +169,11 @@ TEST_F(TestKVClientTable, Get) {
   FakePartitionManager manager({0, 1}, 4);
   FakeCallbackRunner callback_runner;
   std::thread th([&queue, &manager, &callback_runner]() {
-    KVClientTable<float> table(kTestAppThreadId, kTestModelId, &queue, &manager, &callback_runner);
+    KVClientTable<double> table(kTestAppThreadId, kTestModelId, &queue, &manager, &callback_runner);
     std::vector<Key> keys = {3, 4, 5, 6};
-    std::vector<float> vals;
+    std::vector<double> vals;
     table.Get(keys, &vals);  // {3,4,5,6} -> {3}, {4,5,6}
-    std::vector<float> expected{0.1, 0.4, 0.2, 0.3};
+    std::vector<double> expected{0.1, 0.4, 0.2, 0.3};
     EXPECT_EQ(vals, expected);
   });
   // Check the requests in queue
@@ -206,11 +205,11 @@ TEST_F(TestKVClientTable, Get) {
   // AddResponse
   Message r1, r2;
   third_party::SArray<Key> r1_keys{3};
-  third_party::SArray<float> r1_vals{0.1};
+  third_party::SArray<double> r1_vals{0.1};
   r1.AddData(r1_keys);
   r1.AddData(r1_vals);
   third_party::SArray<Key> r2_keys{4, 5, 6};
-  third_party::SArray<float> r2_vals{0.4, 0.2, 0.3};
+  third_party::SArray<double> r2_vals{0.4, 0.2, 0.3};
   r2.AddData(r2_keys);
   r2.AddData(r2_vals);
   callback_runner.AddResponse(kTestAppThreadId, kTestModelId, r1);

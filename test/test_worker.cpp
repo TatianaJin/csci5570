@@ -28,14 +28,14 @@ void TestBgWorker() {
         while (!ready) {
           std::this_thread::yield();
         }
-        KVClientTable<float> table(kTestAppThreadId1, kTestModelId, &downstream_queue, &range_manager, &app_blocker);
+        KVClientTable<double> table(kTestAppThreadId1, kTestModelId, &downstream_queue, &range_manager, &app_blocker);
         // Add
         std::vector<Key> keys = {3, 4, 5, 6};
-        std::vector<float> vals = {0.1, 0.1, 0.1, 0.1};
+        std::vector<double> vals = {0.1, 0.1, 0.1, 0.1};
         table.Add(keys, vals);  // {3,4,5,6} -> {3}, {4,5,6}
 
         // Get
-        std::vector<float> rets;
+        std::vector<double> rets;
         table.Get(keys, &rets);
         CHECK_EQ(rets.size(), 4);
         LOG(INFO) << rets[0] << " " << rets[1] << " " << rets[2] << " " << rets[3];
@@ -45,14 +45,14 @@ void TestBgWorker() {
         while (!ready) {
           std::this_thread::yield();
         }
-        KVClientTable<float> table(kTestAppThreadId2, kTestModelId, &downstream_queue, &range_manager, &app_blocker);
+        KVClientTable<double> table(kTestAppThreadId2, kTestModelId, &downstream_queue, &range_manager, &app_blocker);
         // Add
         std::vector<Key> keys = {3, 4, 5, 6};
-        std::vector<float> vals = {0.1, 0.1, 0.1, 0.1};
+        std::vector<double> vals = {0.1, 0.1, 0.1, 0.1};
         table.Add(keys, vals);  // {3,4,5,6} -> {3}, {4,5,6}
 
         // Get
-        std::vector<float> rets;
+        std::vector<double> rets;
         table.Get(keys, &rets);
         CHECK_EQ(rets.size(), 4);
         LOG(INFO) << rets[0] << " " << rets[1] << " " << rets[2] << " " << rets[3];
@@ -80,11 +80,11 @@ void TestBgWorker() {
   msg2.meta.model_id = kTestModelId;
   msg2.meta.flag = Flag::kGet;
   third_party::SArray<Key> r1_keys{3};
-  third_party::SArray<float> r1_vals{0.1};
+  third_party::SArray<double> r1_vals{0.1};
   msg1.AddData(r1_keys);
   msg1.AddData(r1_vals);
   third_party::SArray<Key> r2_keys{4, 5, 6};
-  third_party::SArray<float> r2_vals{0.4, 0.2, 0.3};
+  third_party::SArray<double> r2_vals{0.4, 0.2, 0.3};
   msg2.AddData(r2_keys);
   msg2.AddData(r2_vals);
   work_queue->Push(msg1);
